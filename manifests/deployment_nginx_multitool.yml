@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  labels:
+    app: web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: vol-web
+          mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+      - name: multitool
+        image: wbitt/network-multitool:latest
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+      volumes:
+      - name: vol-web
+        configMap:
+          name: myapp-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service
+spec:
+  selector:
+    app: web-app
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
