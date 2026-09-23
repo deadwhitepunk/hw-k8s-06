@@ -67,7 +67,7 @@
 
 - Скриншот вывода `curl` или браузера
 
-![Curl](https://github.com/deadwhitepunk/hw-k8s-06/blob/main/img/curl_new_index.png)
+![Curl](https://github.com/deadwhitepunk/hw-k8s-06/blob/main/img/1_curl_new_index.png)
 
 ---
 ## **Задание 2: Настройка HTTPS с Secrets**  
@@ -130,12 +130,14 @@ openssl x509 -req -in developer.csr -CA {CA серт вашего кластер
 
 - Команды генерации сертификатов
 
+```sh
 openssl genrsa -out developer.key 2048
 openssl req -new -key developer.key -out developer.csr -subj "/CN=Bob"
 cp ./ca.key /home/sadmin/netology-hw/k8s/hw-k8s-06/manifests
 cp ./ca.crt /home/sadmin/netology-hw/k8s/hw-k8s-06/manifests
 openssl x509 -req -in developer.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out developer.crt -days 365
 k config set-credentials Bob --client-certificate=developer.crt --client-key=developer.key --embed-certs=true
+```
 
 ![Enable RBAC](https://github.com/deadwhitepunk/hw-k8s-06/blob/main/img/3_enable_rbac.png)
 
